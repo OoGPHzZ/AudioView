@@ -6,22 +6,25 @@
 
 ## gradle
 Add it in your root build.gradle at the end of repositories:
+
+Step 1. Add the JitPack repository to your build file
 ```
-  allprojects {
-	  repositories {
-			...
-			maven { url 'https://jitpack.io' }
-		}
+allprojects {
+	repositories {
+		...
+		maven { url 'https://jitpack.io' }
 	}
+}
 ```
-Add the dependency
+Step 2. Add the dependency
 ```
-  dependencies {
-	        compile 'com.github.OoGPHzZ:AudioView:v1.0.0'
-	}
+dependencies {
+	compile 'com.github.gpenghui:AudioView:v1.0.0'
+}
   ```
   
   ## maven
+  Step 1. Add the JitPack repository to your build file
   ```
   <repositories>
 		<repository>
@@ -30,8 +33,10 @@ Add the dependency
 		</repository>
 	</repositories>
   ```
-  	<dependency>
-	    <groupId>com.github.OoGPHzZ</groupId>
+  Step 2. Add the dependency
+  ```
+	<dependency>
+	    <groupId>com.github.gpenghui</groupId>
 	    <artifactId>AudioView</artifactId>
 	    <version>v1.0.0</version>
 	</dependency>
