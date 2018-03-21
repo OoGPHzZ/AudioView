@@ -163,12 +163,15 @@ public class MediaPlayManager implements MediaPlayer.OnErrorListener, MediaPlaye
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        stop();
+//        stop();
         if (null != mOnPlayerProgressListener) {
             mOnPlayerProgressListener.onProgress(totalTime);
         }
         if (null != mOnCompletionListener) {
             mOnCompletionListener.onCompletion(mp);
+        }
+        if (null != mOnPlayerStateListener) {
+            mOnPlayerStateListener.onMediaPlayerState(false);
         }
     }
 

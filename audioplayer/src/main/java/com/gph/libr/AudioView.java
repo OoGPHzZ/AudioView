@@ -1,6 +1,5 @@
 package com.gph.libr;
 
-import android.app.Activity;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.support.annotation.NonNull;
@@ -23,7 +22,7 @@ import com.gph.libr.utils.MediaPlayManager;
  */
 
 public class AudioView extends FrameLayout implements View.OnClickListener, MediaPlayManager.OnBufferingListener, MediaPlayManager.OnCompletionListener, MediaPlayManager.OnErrorListener, MediaPlayManager.OnPlayerProgressListener, MediaPlayManager.OnPlayerStateListener, SeekBar.OnSeekBarChangeListener {
-    private Activity mActivity;
+    private Context mContext;
 
     private AppCompatSeekBar mSeekBar;
     private TextView mCurrent;
@@ -53,12 +52,12 @@ public class AudioView extends FrameLayout implements View.OnClickListener, Medi
 
     public AudioView(@NonNull Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mActivity = (Activity) context;
+        this.mContext = context;
         initView();
     }
 
     private void initView() {
-        inflate(mActivity, R.layout.view_audio_layout, this);
+        inflate(mContext, R.layout.view_audio_layout, this);
         mCurrent = findViewById(R.id.current);
         mSeekBar = findViewById(R.id.seek_bar);
         mDuration = findViewById(R.id.duration);
@@ -81,7 +80,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener, Medi
      */
     public void init(String resourceUrl, String totalTime) {
         this.mUrl = resourceUrl;
-        AudioUiUtils.getInstance().addViewToList(this);
+        //        mSeekBar.setProgress(0);
         mDuration.setText(totalTime);
     }
 
@@ -127,38 +126,37 @@ public class AudioView extends FrameLayout implements View.OnClickListener, Medi
         this.onReleaseOtherPlayer = onReleaseOtherPlayer;
     }
 
-    /**
-     * 释放播放器以及初始化所有UI
-     */
-    public void releaseAll() {
-        MediaPlayManager.getInstance().stop();
-        AudioUiUtils.getInstance().resetAllView();
-    }
-
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.play) {
+            AudioUiUtils.getInstance().addViewToList(this);
             if (mManager.isPlaying()) {
+                //播放装态
                 if (!mPlay.isSelected()) {
+                    //当前点击的选项不是正在播放的选项
                     mManager.pause();
                     AudioUiUtils.getInstance().resetOtherView(this);
                     prepared();
                 } else {
+                    //当前点击的选项是正在播放的选项
                     mManager.pause();
                 }
             } else {
+                //非==播放状态
                 if (null != onReleaseOtherPlayer) {
                     onReleaseOtherPlayer.onRelease();
                 }
                 if (isPrepared) {
+                    //当前点击的选项已经准备好了（暂停状态）
                     mManager.play();
                 } else {
+                    //当前点击的选项没准备好，并且mediaplayer不是准备状态
                     AudioUiUtils.getInstance().resetOtherView(this);
                     prepared();
                 }
             }
-        }else if(i == R.id.error){
+        } else if (i == R.id.error) {
             resetDefaultUi();
             mError.setVisibility(GONE);
             prepared();
@@ -183,9 +181,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener, Medi
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        if (null != mManager) {
-            mManager.stop();
-        }
+        AudioUiUtils.getInstance().resetView(this);
     }
 
     @Override
@@ -208,6 +204,7 @@ public class AudioView extends FrameLayout implements View.OnClickListener, Medi
         if (null != onPlayCompletion) {
             onPlayCompletion.onPlayCompletion(mp);
         }
+        isPrepared = false;
     }
 
     @Override
