@@ -57,7 +57,7 @@ public class MediaPlayManager implements MediaPlayer.OnErrorListener, MediaPlaye
     }
 
     /**
-     * 初始化数据
+     * 初始化播放器
      *
      * @param url
      */
