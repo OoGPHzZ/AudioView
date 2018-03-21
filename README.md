@@ -19,7 +19,7 @@ allprojects {
 Step 2. Add the dependency
 ```
 dependencies {
-	compile 'com.github.gpenghui:AudioView:v1.0.0'
+	compile 'com.github.gpenghui:AudioView:v1.1.2'
 }
   ```
   
@@ -38,5 +38,5 @@ dependencies {
 	<dependency>
 	    <groupId>com.github.gpenghui</groupId>
 	    <artifactId>AudioView</artifactId>
-	    <version>v1.0.0</version>
+	    <version>v1.1.2</version>
 	</dependency>
